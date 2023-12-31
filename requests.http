@@ -1,0 +1,56 @@
+@authToken= Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTYW50YVNlY3JldCBBUEkiLCJzdWIiOiJjZXNhci5zYW50b3MyMDQyQGdtYWlsLmNvbSIsImV4cCI6MTcwMzYyMDE0NX0.zPBIk-cnojpZelioQnxLS8rMwRCG05O3TBRPhdld5Ys
+
+### Login
+POST http://localhost:8080/login HTTP/1.1
+content-type: application/json
+
+{
+    "email": "cesar.santos2042@gmail.com",
+    "password": "12345678"
+}
+
+### get user
+GET http://localhost:8080/users
+Authorization: {{authToken}}
+
+
+### Save user
+POST http://localhost:8080/users HTTP/1.1
+content-type: application/json
+Authorization: {{authToken}}
+
+{
+    "name": "Cesar Santos",
+    "email": "cesarf22raptor@gmail.com",
+    "password": "l0b1nh042"
+}
+
+### Create party
+POST http://localhost:8080/parties HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "name": "Festa de aniversário",
+    "partyDate": "2020-12-31",
+    "maxPriceGift": 100.00
+}
+
+### subscribe user to party
+POST http://localhost:8080/users/subscribe/1/parties/1 HTTP/1.1
+Authorization: {{authToken}}
+
+### register user gifts
+POST http://localhost:8080/users/gifts HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "userId": 1,
+    "partyId": 1,
+    "gifts": [
+        {"name": "relogio", "price": 50.00},
+        {"name": "camisa", "price": 30.00},
+        {"name": "calca", "price": 80.00}
+    ]
+}
