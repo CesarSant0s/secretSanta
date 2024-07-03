@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.pitang.secretsanta.dto.PartyDTO;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +29,7 @@ public class Party {
     private Date partyDate;
     private Double maxPriceGift;
 
-    @OneToMany(mappedBy = "party")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Gift> gifts;
 
     @ManyToMany(mappedBy = "parties")

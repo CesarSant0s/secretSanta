@@ -17,21 +17,26 @@ import com.pitang.secretsanta.dto.RegisterGiftsDTO;
 import com.pitang.secretsanta.dto.user.NewUserDTO;
 import com.pitang.secretsanta.dto.user.UserDTO;
 import com.pitang.secretsanta.dto.user.UserToSaveDTO;
-import com.pitang.secretsanta.model.User;
 import com.pitang.secretsanta.service.UserService;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("user")
 public class UserController {
 
     @Autowired
     UserService service;
 
+    /**
+     * Create a new user
+     * @param newUser
+     * @return
+     */
     @PostMapping
     public ResponseEntity<NewUserDTO> create(@RequestBody UserToSaveDTO newUser) {
         var createdUser = service.create(newUser);
         return ResponseEntity.ok(createdUser);
     }
+
 
     @GetMapping
     public ResponseEntity<List<UserDTO>> list() {
@@ -39,10 +44,16 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> get(@PathVariable Long id) {
+        var user = service.getUserById(id);
+        return ResponseEntity.ok(user);
+    }
+
     @PutMapping
     public ResponseEntity<UserDTO> update(@RequestBody UserDTO updatedUser) {
-        var user = service.update(new User(updatedUser));
-        return ResponseEntity.ok(new UserDTO(user));
+        var user = service.update(updatedUser);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.pitang.secretsanta.dto.GiftDTO;
 import com.pitang.secretsanta.dto.RegisterGiftsDTO;
 import com.pitang.secretsanta.dto.user.NewUserDTO;
 import com.pitang.secretsanta.dto.user.UserDTO;
@@ -43,17 +44,20 @@ public class UserService {
     }
 
     public List<UserDTO> list() {
-        var list = userRepository.findAll().stream()
+        return userRepository.findAll().stream()
                 .map(UserDTO::new)
                 .collect(Collectors.toList());
-        return list;
     }
 
     @Transactional
-    public User update(User updatedDataUser) {
-        var user = userRepository.getReferenceById(updatedDataUser.getId());
-        user.updateUser(user);
-        return null;
+    public UserDTO update(UserDTO updatedDataUser) {
+        var user = userRepository.getReferenceById(updatedDataUser.id());
+
+        user.updateData(updatedDataUser);
+
+        userRepository.save(user);
+
+        return new UserDTO(user);
     }
 
     public User delete(long id) {
@@ -71,8 +75,11 @@ public class UserService {
     @Transactional
     public void registerGifts(RegisterGiftsDTO giftsToRegister) {
         User user = userRepository.findById(giftsToRegister.userId()).get();
-        Party party = partyRepository.findById(giftsToRegister.partyId()).get(); // chamar o service
-        user.registerGifts(party, giftsToRegister.gifts());
+        user.registerGifts( giftsToRegister.gifts());
+    }
+
+    public UserDTO getUserById(Long id) {
+        return new UserDTO(userRepository.findById(id).orElseThrow(NullPointerException::new));
     }
 
 }

@@ -69,9 +69,8 @@ public class User implements UserDetails {
         this.getParties().add(party);
     }
 
-    public void registerGifts(Party party, List<Gift> giftsList) {
+    public void registerGifts( List<Gift> giftsList) {
         giftsList.stream().forEach(g -> {
-            g.setParty(party);
             g.setUser(this);
         });
         gifts.addAll(giftsList);
@@ -111,6 +110,15 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void updateData(UserDTO updatedDataUser) {
+
+        this.setEmail(updatedDataUser.email());
+        this.setName(updatedDataUser.name());
+        this.gifts.clear();
+        this.setGifts(updatedDataUser.gifts().stream().map(Gift::new).toList());
+
     }
 
 }

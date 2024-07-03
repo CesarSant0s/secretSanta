@@ -1,5 +1,7 @@
 package com.pitang.secretsanta.model;
 
+import com.pitang.secretsanta.dto.GiftDTO;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -28,15 +30,15 @@ public class Gift {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "party_id")
-    private Party party;
-
-    public Gift(User user, Party party, String name, Double price) {
+    public Gift(User user, String name, Double price) {
         this.setName(name);
         this.setPrice(price);
         this.setUser(user);
-        this.setParty(party);
+    }
+
+    public Gift(GiftDTO giftDTO) {
+        this.setName(giftDTO.name());
+        this.setPrice(giftDTO.price());
     }
 
 }

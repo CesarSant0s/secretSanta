@@ -12,11 +12,11 @@ import com.pitang.secretsanta.repository.UserRepository;
 public class AuthenticationService implements UserDetailsService{
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return repository.findByEmail(username);
+        return userRepository.findByEmail(username);
     }
 
 }
