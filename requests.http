@@ -1,4 +1,4 @@
-@authToken= Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTYW50YVNlY3JldCBBUEkiLCJzdWIiOiJjZXNhci5zYW50b3MyMDQyQGdtYWlsLmNvbSIsImV4cCI6MTcwMzYyMDE0NX0.zPBIk-cnojpZelioQnxLS8rMwRCG05O3TBRPhdld5Ys
+@authToken= Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTYW50YVNlY3JldCBBUEkiLCJzdWIiOiJjZXNhci5zYW50b3MyMDQyQGdtYWlsLmNvbSIsImV4cCI6MTcyMjUyMTIzN30.ATBZp1LqAlOQrCWBoYhUEV7Rr7Ac9hF41fRyVC3awaE
 
 ### Login
 POST http://localhost:8080/login HTTP/1.1
@@ -10,7 +10,7 @@ content-type: application/json
 }
 
 ### get user
-GET http://localhost:8080/users
+GET http://localhost:8080/user
 Authorization: {{authToken}}
 
 
@@ -26,31 +26,102 @@ Authorization: {{authToken}}
 }
 
 ### Create party
-POST http://localhost:8080/parties HTTP/1.1
+POST http://localhost:8080/party HTTP/1.1
 content-Type: application/json
 Authorization: {{authToken}}
 
 {
-    "name": "Festa de aniversário",
+    "name": "Ano novo",
     "partyDate": "2020-12-31",
     "maxPriceGift": 100.00
 }
 
-### subscribe user to party
-POST http://localhost:8080/users/subscribe/1/parties/1 HTTP/1.1
+### Insert unser in a party
+POST http://localhost:8080/party/1/user/1 HTTP/1.1
+content-Type: application/json
 Authorization: {{authToken}}
 
-### register user gifts
-POST http://localhost:8080/users/gifts HTTP/1.1
+### Insert unser in a party
+POST http://localhost:8080/party/1/user/2 HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+
+### Insert unser in a party
+POST http://localhost:8080/party/1/user/3 HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+
+### Insert unser in a party
+POST http://localhost:8080/party/1/user/4 HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+### Insert unser in a party
+POST http://localhost:8080/party/1/user/5 HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+### Insert user gift in a party
+POST http://localhost:8080/party/1/user/1/gift HTTP/1.1
 content-Type: application/json
 Authorization: {{authToken}}
 
 {
-    "userId": 1,
-    "partyId": 1,
-    "gifts": [
-        {"name": "relogio", "price": 50.00},
-        {"name": "camisa", "price": 30.00},
-        {"name": "calca", "price": 80.00}
-    ]
+    "name": "keyboard",
+    "price": 60.00
 }
+
+### Insert user gift in a party
+POST http://localhost:8080/party/1/user/2/gift HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "name": "mouse",
+    "price": 60.00
+}
+
+
+### Insert user gift in a party
+POST http://localhost:8080/party/1/user/3/gift HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "name": "cpu",
+    "price": 60.00
+}
+
+
+### Insert user gift in a party
+POST http://localhost:8080/party/1/user/4/gift HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "name": "mother board",
+    "price": 60.00
+}
+
+
+### Insert user gift in a party
+POST http://localhost:8080/party/1/user/5/gift HTTP/1.1
+content-Type: application/json
+Authorization: {{authToken}}
+
+{
+    "name": "headset",
+    "price": 60.00
+}
+
+
+### Get party
+GET http://localhost:8080/party/1
+Authorization: {{authToken}}
+
+### Generate Secret Santa
+POST http://localhost:8080/party/1/generate-scret-santa HTTP/1.1
+# content-Type: application/json
+Authorization: {{authToken}}

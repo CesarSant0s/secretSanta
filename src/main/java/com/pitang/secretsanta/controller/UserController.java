@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pitang.secretsanta.dto.RegisterGiftsDTO;
 import com.pitang.secretsanta.dto.user.NewUserDTO;
 import com.pitang.secretsanta.dto.user.UserDTO;
 import com.pitang.secretsanta.dto.user.UserToSaveDTO;
 import com.pitang.secretsanta.service.UserService;
 
 @RestController
-@RequestMapping("user")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -38,41 +37,47 @@ public class UserController {
     }
 
 
+    /**
+     * List all users
+     * @return
+     */
     @GetMapping
     public ResponseEntity<List<UserDTO>> list() {
         var users = service.list();
         return ResponseEntity.ok(users);
     }
 
+    /**
+     * Get a user by id
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> get(@PathVariable Long id) {
-        var user = service.getUserById(id);
+        var user = service.getUserDTOById(id);
         return ResponseEntity.ok(user);
     }
 
+    /**
+     * Update a user
+     * @param updatedUser
+     * @return
+     */
     @PutMapping
     public ResponseEntity<UserDTO> update(@RequestBody UserDTO updatedUser) {
         var user = service.update(updatedUser);
         return ResponseEntity.ok(user);
     }
 
+    /**
+     * Delete a user
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/subscribe/{userId}/parties/{partyId}")
-    public ResponseEntity<Void> subscribeParty(@PathVariable Long partyId, @PathVariable Long userId) {
-        service.subscribeParty(userId, partyId);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/gifts")
-    public ResponseEntity<Void> registerGifts(@RequestBody RegisterGiftsDTO gifts){
-
-        service.registerGifts(gifts);
-        return ResponseEntity.ok().build();
     }
 
 }

@@ -10,14 +10,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.pitang.secretsanta.dto.user.UserDTO;
 import com.pitang.secretsanta.dto.user.UserToSaveDTO;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -36,17 +32,6 @@ public class User implements UserDetails {
     private String email;
     private String password;
 
-    @OneToMany(
-        mappedBy = "user", 
-        cascade = CascadeType.ALL)
-    private List<Gift> gifts;
-
-    @ManyToMany
-    @JoinTable(name = "party_user", 
-        joinColumns = @jakarta.persistence.JoinColumn(name = "user_id"), 
-        inverseJoinColumns = @jakarta.persistence.JoinColumn(name = "party_id"))
-    private List<Party> parties;
-
     public User(UserToSaveDTO user) {
         this.setName(user.name());
         this.setEmail(user.email());
@@ -61,19 +46,6 @@ public class User implements UserDetails {
     public User(UserDTO updatedUser) {
         this.setEmail(updatedUser.email());
         this.setName(updatedUser.name());
-    }
-
-    public void subscribeParty(Long partyId) {
-        Party party = new Party();
-        party.setId(partyId);
-        this.getParties().add(party);
-    }
-
-    public void registerGifts( List<Gift> giftsList) {
-        giftsList.stream().forEach(g -> {
-            g.setUser(this);
-        });
-        gifts.addAll(giftsList);
     }
 
     @Override
@@ -116,9 +88,6 @@ public class User implements UserDetails {
 
         this.setEmail(updatedDataUser.email());
         this.setName(updatedDataUser.name());
-        this.gifts.clear();
-        this.setGifts(updatedDataUser.gifts().stream().map(Gift::new).toList());
-
     }
 
 }

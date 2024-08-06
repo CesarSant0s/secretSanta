@@ -1,9 +1,14 @@
 package com.pitang.secretsanta.service;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.pitang.secretsanta.dto.GiftDTO;
+import com.pitang.secretsanta.dto.PartyDTO;
 import com.pitang.secretsanta.model.Party;
+import com.pitang.secretsanta.model.SecretSanta;
+import com.pitang.secretsanta.model.User;
 import com.pitang.secretsanta.repository.PartyRepository;
 
 import jakarta.transaction.Transactional;
@@ -14,12 +19,14 @@ public class PartyService {
     @Autowired
     private PartyRepository partyRepository;
 
+    @Autowired UserService userService;
+
     public Party createParty(Party party) {
         return partyRepository.save(party);
     }
 
-    public Party getParty(Long id) {
-        return partyRepository.findById(id).get();
+    public PartyDTO getParty(Long id) {
+        return new PartyDTO(partyRepository.findById(id).orElseThrow(NullPointerException::new));
     }
 
     @Transactional
@@ -32,6 +39,40 @@ public class PartyService {
     @Transactional
     public void deleteParty(Long id) {
         partyRepository.deleteById(id);
+    }
+
+    public void insertUser(Long id, Long userId) {
+        
+        Party party = partyRepository.findById(id).orElseThrow(NullPointerException::new);
+
+        User user = userService.getUserById(userId);
+
+        party.addUser(user);
+
+        partyRepository.save(party);
+
+    }
+
+    public void insertUserGift(Long id, Long userId, GiftDTO giftDTO) {
+        
+        Party party = partyRepository.findById(id).orElseThrow(NullPointerException::new);
+
+        User user = userService.getUserById(userId);
+
+        party.addUserGift(user, giftDTO);
+
+        partyRepository.save(party);
+
+    }
+
+    public void generateSecretSantas(Long id) {
+
+        Party party = partyRepository.findById(id).orElseThrow(NullPointerException::new);
+
+        party.generateSecretSantas();
+
+        partyRepository.save(party);
+
     }
 
 }

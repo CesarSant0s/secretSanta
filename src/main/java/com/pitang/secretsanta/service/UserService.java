@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.pitang.secretsanta.dto.GiftDTO;
-import com.pitang.secretsanta.dto.RegisterGiftsDTO;
 import com.pitang.secretsanta.dto.user.NewUserDTO;
 import com.pitang.secretsanta.dto.user.UserDTO;
 import com.pitang.secretsanta.dto.user.UserToSaveDTO;
-import com.pitang.secretsanta.model.Party;
 import com.pitang.secretsanta.model.User;
 import com.pitang.secretsanta.repository.PartyRepository;
 import com.pitang.secretsanta.repository.UserRepository;
@@ -66,20 +63,13 @@ public class UserService {
         return null;
     }
 
-    @Transactional
-    public void subscribeParty(Long userId, Long partyId) {
-        User user = userRepository.findById(userId).get();
-        user.subscribeParty(partyId);
-    }
 
-    @Transactional
-    public void registerGifts(RegisterGiftsDTO giftsToRegister) {
-        User user = userRepository.findById(giftsToRegister.userId()).get();
-        user.registerGifts( giftsToRegister.gifts());
-    }
-
-    public UserDTO getUserById(Long id) {
+    public UserDTO getUserDTOById(Long id) {
         return new UserDTO(userRepository.findById(id).orElseThrow(NullPointerException::new));
+    }
+
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(NullPointerException::new);
     }
 
 }

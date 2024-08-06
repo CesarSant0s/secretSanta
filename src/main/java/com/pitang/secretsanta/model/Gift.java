@@ -3,7 +3,6 @@ package com.pitang.secretsanta.model;
 import com.pitang.secretsanta.dto.GiftDTO;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,7 +25,7 @@ public class Gift {
     private String name;
     private Double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
