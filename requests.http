@@ -1,4 +1,4 @@
-@authToken= Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTYW50YVNlY3JldCBBUEkiLCJzdWIiOiJjZXNhci5zYW50b3MyMDQyQGdtYWlsLmNvbSIsImV4cCI6MTcyMjUyMTIzN30.ATBZp1LqAlOQrCWBoYhUEV7Rr7Ac9hF41fRyVC3awaE
+@authToken= Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTYW50YVNlY3JldCBBUEkiLCJzdWIiOiJjZXNhci5zYW50b3MyMDQyQGdtYWlsLmNvbSIsImV4cCI6MTcyMzEwNDEwMX0.NM81ED1YpYjvnr6SRuW6EpzCe5h0X6keoC2UOePHAU8
 
 ### Login
 POST http://localhost:8080/login HTTP/1.1
@@ -32,7 +32,7 @@ Authorization: {{authToken}}
 
 {
     "name": "Ano novo",
-    "partyDate": "2020-12-31",
+    "partyDate": "2024-12-25",
     "maxPriceGift": 100.00
 }
 
@@ -64,56 +64,61 @@ content-Type: application/json
 Authorization: {{authToken}}
 
 ### Insert user gift in a party
-POST http://localhost:8080/party/1/user/1/gift HTTP/1.1
+POST http://localhost:8080/party/1/gift HTTP/1.1
 content-Type: application/json
 Authorization: {{authToken}}
 
 {
     "name": "keyboard",
-    "price": 60.00
+    "price": 60.00,
+    "userId": 1
 }
 
 ### Insert user gift in a party
-POST http://localhost:8080/party/1/user/2/gift HTTP/1.1
+POST http://localhost:8080/party/1/gift HTTP/1.1
 content-Type: application/json
 Authorization: {{authToken}}
 
 {
     "name": "mouse",
-    "price": 60.00
+    "price": 60.00,
+    "userId": 2
 }
 
 
 ### Insert user gift in a party
-POST http://localhost:8080/party/1/user/3/gift HTTP/1.1
+POST http://localhost:8080/party/1/gift HTTP/1.1
 content-Type: application/json
 Authorization: {{authToken}}
 
 {
     "name": "cpu",
-    "price": 60.00
+    "price": 60.00,
+    "userId": 3
 }
 
 
 ### Insert user gift in a party
-POST http://localhost:8080/party/1/user/4/gift HTTP/1.1
+POST http://localhost:8080/party/1/gift HTTP/1.1
 content-Type: application/json
 Authorization: {{authToken}}
 
 {
     "name": "mother board",
-    "price": 60.00
+    "price": 60.00,
+    "userId": 4
 }
 
 
 ### Insert user gift in a party
-POST http://localhost:8080/party/1/user/5/gift HTTP/1.1
+POST http://localhost:8080/party/1/gift HTTP/1.1
 content-Type: application/json
 Authorization: {{authToken}}
 
 {
     "name": "headset",
-    "price": 60.00
+    "price": 60.00,
+    "userId": 5
 }
 
 

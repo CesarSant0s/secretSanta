@@ -38,16 +38,17 @@ public class User implements UserDetails {
         this.setPassword(user.password());
     }
 
-    public void updateUser(User user) {
-        this.setEmail(user.getEmail());
-        this.setName(user.getName());
-    }
-
+    
     public User(UserDTO updatedUser) {
         this.setEmail(updatedUser.email());
         this.setName(updatedUser.name());
     }
-
+    
+    public void updateUser(User user) {
+        this.setEmail(user.getEmail());
+        this.setName(user.getName());
+    }
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));

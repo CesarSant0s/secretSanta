@@ -1,15 +1,15 @@
 package com.pitang.secretsanta;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import java.util.Date;
 
 import com.pitang.secretsanta.dto.PartyDTO;
 import com.pitang.secretsanta.dto.user.UserToSaveDTO;
-import com.pitang.secretsanta.model.Party;
 import com.pitang.secretsanta.service.PartyService;
 import com.pitang.secretsanta.service.UserService;
 
@@ -49,9 +49,11 @@ public class SecretsantaApplication {
 			"antonio.cesar@gmail.com",
 			"12345678"));
 					
-		partyService.createParty(new Party(new 
-			PartyDTO("Confraternização de fim de ano",new Date(), 100.0,
-			null, null, null)));
+		partyService.createParty(new PartyDTO(
+			"Confraternização de fim de ano",
+			LocalDate.now().plusDays(1), 
+			100.0,
+			null, null, null));
 	
 	}
 

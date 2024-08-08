@@ -22,8 +22,8 @@ public class PartyController {
     private PartyService partyService;
 
     @PostMapping
-    public ResponseEntity<Party> createParty(@RequestBody PartyDTO party) {
-        Party createdParty = partyService.createParty(new Party(party));
+    public ResponseEntity<Party> createParty(@RequestBody PartyDTO partyDTO) {
+        Party createdParty = partyService.createParty(partyDTO);
         return ResponseEntity.ok(createdParty);
     }
 
@@ -54,13 +54,12 @@ public class PartyController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/{id}/user/{userId}/gift")
+    @PostMapping("/{id}/gift")
     public ResponseEntity<Party> insertUserGift(
         @PathVariable Long id,
-        @PathVariable Long userId,
-        @RequestBody GiftDTO giftDTO) {
+        @RequestBody GiftDTO giftDTO) throws Exception {
 
-        partyService.insertUserGift(id, userId, giftDTO);
+        partyService.insertUserGift(id, giftDTO);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -72,12 +71,5 @@ public class PartyController {
         
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
-    // @GetMapping("/{id}/secret-santa/{userId}")
-    // public ResponseEntity<PartyDTO> getSecretSanta(@PathVariable Long id, @PathVariable Long userId) {
-    //     PartyDTO party = partyService.getSecretSanta(id, userId);
-    //     return ResponseEntity.ok(party);
-    // }
-    
 
 }

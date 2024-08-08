@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.pitang.secretsanta.dto.GiftDTO;
 import com.pitang.secretsanta.dto.PartyDTO;
+import com.pitang.secretsanta.model.Gift;
 import com.pitang.secretsanta.model.Party;
-import com.pitang.secretsanta.model.SecretSanta;
 import com.pitang.secretsanta.model.User;
 import com.pitang.secretsanta.repository.PartyRepository;
 
@@ -21,8 +21,8 @@ public class PartyService {
 
     @Autowired UserService userService;
 
-    public Party createParty(Party party) {
-        return partyRepository.save(party);
+    public Party createParty(PartyDTO partyDTO) {
+        return partyRepository.save(new Party(partyDTO));
     }
 
     public PartyDTO getParty(Long id) {
@@ -53,13 +53,11 @@ public class PartyService {
 
     }
 
-    public void insertUserGift(Long id, Long userId, GiftDTO giftDTO) {
+    public void insertUserGift(Long id, GiftDTO giftDTO) throws Exception {
         
         Party party = partyRepository.findById(id).orElseThrow(NullPointerException::new);
-
-        User user = userService.getUserById(userId);
-
-        party.addUserGift(user, giftDTO);
+        User user = userService.getUserById(giftDTO.userId());
+        party.addGift(new Gift(giftDTO, user));
 
         partyRepository.save(party);
 

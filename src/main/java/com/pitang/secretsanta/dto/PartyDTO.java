@@ -1,13 +1,13 @@
 package com.pitang.secretsanta.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import com.pitang.secretsanta.dto.user.UserDTO;
 import com.pitang.secretsanta.model.Party;
 
 public record PartyDTO(String name, 
-    Date partyDate, 
+    LocalDate partyDate, 
     Double maxPriceGift,
     List<GiftDTO> gifts,
     List<UserDTO> users,

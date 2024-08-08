@@ -35,9 +35,10 @@ public class Gift {
         this.setUser(user);
     }
 
-    public Gift(GiftDTO giftDTO) {
+    public Gift(GiftDTO giftDTO, User user) {
         this.setName(giftDTO.name());
         this.setPrice(giftDTO.price());
+        this.setUser(user);
     }
 
 }
