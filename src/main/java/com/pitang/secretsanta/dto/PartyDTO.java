@@ -13,6 +13,10 @@ public record PartyDTO(String name,
     List<UserDTO> users,
     List<SecretSantaDTO> secretSantas) {
 
+    public PartyDTO(String name, LocalDate partyDate, Double maxPriceGift) {
+        this(name, partyDate, maxPriceGift, null, null, null);
+    }
+
     public PartyDTO(Party party) {
         this(party.getName(), 
         party.getPartyDate(), 

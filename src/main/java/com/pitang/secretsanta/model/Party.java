@@ -1,8 +1,6 @@
 package com.pitang.secretsanta.model;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.pitang.secretsanta.dto.PartyDTO;
@@ -13,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,94 +37,24 @@ public class Party {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SecretSanta> secretSantas;
 
-    public void updateParty(Party party) {
-        if (party.getName() != null) {
-            this.setName(party.getName());
-        }
-        if (party.getPartyDate() != null) {
-            this.setPartyDate(party.getPartyDate());
-        }
-        if (party.getMaxPriceGift() != null) {
-            this.setMaxPriceGift(party.getMaxPriceGift());
-        }
-
-        validateAll();
+    public Party(String name, LocalDate partyDate, Double maxPriceGift) {
+        this.setName(name);
+        this.setPartyDate(partyDate);
+        this.setMaxPriceGift(maxPriceGift);
     }
 
     public Party(PartyDTO party) {
         this.setName(party.name());
         this.setPartyDate(party.partyDate());
         this.setMaxPriceGift(party.maxPriceGift());
-        
-        validateAll();
     }
 
     public void addUser(User user) {
-
-        this.users.forEach(u -> {
-            if (u.getId().equals(user.getId())) {
-                throw new IllegalArgumentException("User already exists");
-            }
-        });
-
         this.getUsers().add(user);
     }
 
-    public void addGift(Gift gift) throws Exception {
-        if (gift.getPrice() > this.getMaxPriceGift()) {
-            throw new IllegalArgumentException("The gift value is higher than the maximum price");
-        }
+    public void addGift(Gift gift) {
         this.getGifts().add(gift);
-    }
-
-    @Transient
-    public void generateSecretSantas() {
-
-        if (this.getUsers().size() < 3) {
-            throw new IllegalArgumentException("It is necessary to have at least three participants");
-        }
-
-        List<User> participantList = new ArrayList<>(this.getUsers());
-
-        List<SecretSanta> generatedSecretSantas = new ArrayList<>();
-
-        Collections.shuffle(participantList);
-
-        for (int i = 0; i < participantList.size(); i++) {
-            if (i == participantList.size() - 1) {
-                generatedSecretSantas.add(new SecretSanta(participantList.get(i), participantList.get(0)));
-                break;
-            }
-            generatedSecretSantas.add(new SecretSanta(participantList.get(i), participantList.get(i + 1)));
-        }
-
-        this.setSecretSantas(generatedSecretSantas);
-
-    }
-
-    
-    private void validatePartyDate() {
-        if (partyDate.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("The party date cannot be before the current date");
-        }
-    }
-
-    private void validateMaxPriceGift() {
-        if (maxPriceGift < 0) {
-            throw new IllegalArgumentException("The maximum price of the gift cannot be negative");
-        }
-    }
-
-    private void validateName() {
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("The party name cannot be empty");
-        }
-    }
-
-    private void validateAll() {
-        validateName();
-        validatePartyDate();
-        validateMaxPriceGift();
     }
 
     @Override
