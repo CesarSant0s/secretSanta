@@ -11,6 +11,7 @@ import static org.mockito.Mockito.spy;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -164,7 +165,7 @@ class PartyServiceTest {
     @Test
     void shouldThorwAnErrorWhenTheUserAlreadyIsInTheParty() {
         // arrange
-        var users = new ArrayList<User>();
+        var users = new LinkedHashSet<User>();
         users.add(user1);
         given(partyRepository.findById(1L)).willReturn(Optional.of(party));
         given(userService.getUserById(1L)).willReturn(user1);
@@ -179,7 +180,7 @@ class PartyServiceTest {
         // arrange
         given(partyRepository.findById(1L)).willReturn(Optional.of(party));
         given(userService.getUserById(1L)).willReturn(user1);
-        var users = new ArrayList<User>();
+        var users = new LinkedHashSet<User>();
         users.add(user2);
         given(party.getUsers()).willReturn(users);
         
@@ -191,7 +192,7 @@ class PartyServiceTest {
     void testGenerateSecretSantas1() {
         // arrange
         Party partySpy = spy(Party.class);
-        var users = Mockito.spy(new ArrayList<User>());
+        var users = Mockito.spy(new LinkedHashSet<User>());
         for (int i = 0; i < 5; i++) {
             users.add(mock(User.class));
         }
@@ -211,7 +212,7 @@ class PartyServiceTest {
     void testGenerateSecretSantas2() {
         // arrange
         var partySpy = spy(Party.class);
-        var users = spy(new ArrayList<User>());
+        var users = spy(new LinkedHashSet<User>());
         for (int i = 0; i < 5; i++) {
             users.add(new User(2L + i, "nametest"+i, "email"+i, "test"+i));
         }
@@ -227,14 +228,8 @@ class PartyServiceTest {
         var recivers = partySpy.getSecretSantas().stream().map(secretSanta -> secretSanta.getReciver().getId()).toList();
         var givers = partySpy.getSecretSantas().stream().map(secretSanta -> secretSanta.getGiver().getId()).toList();
 
-        var duplicateRecivers = listDuplicate(recivers);
-        var duplicateGivers = listDuplicate(givers);
-
-        for (int i = 0; i < 5; i++) {
-            assertEquals(false, duplicateRecivers.contains((long) i));
-            assertEquals( false, duplicateGivers.contains((long) i));
-        }
-
+        assertEquals(recivers.size(),new HashSet<>(recivers).size());
+        assertEquals( givers.size(), new HashSet<>(givers).size());
     }
 
     @Test
@@ -242,7 +237,7 @@ class PartyServiceTest {
 
         // arrange
         Party partySpy = spy(Party.class);
-        var users = Mockito.spy(new ArrayList<User>());
+        var users = Mockito.spy(new LinkedHashSet<User>());
         for (int i = 0; i < 5; i++) {
             users.add(mock(User.class));
         }
@@ -262,7 +257,7 @@ class PartyServiceTest {
     void testGenerateSecretSantas4() {
          // arrange
          Party partySpy = spy(Party.class);
-         var users = Mockito.spy(new ArrayList<User>());
+         var users = Mockito.spy(new LinkedHashSet<User>());
          for (int i = 0; i < 2; i++) {
              users.add(mock(User.class));
          }
@@ -275,16 +270,16 @@ class PartyServiceTest {
 
     @Test
     void testGenerateSecretSantas5() {
-         // arrange
-         Party partySpy = spy(Party.class);
-         var users = Mockito.spy(new ArrayList<User>());
-         for (int i = 0; i < 3; i++) {
-             users.add(mock(User.class));
-         }
-         partySpy.setUsers(users);
+        // arrange
+        Party partySpy = spy(Party.class);
+        var users = Mockito.spy(new LinkedHashSet<User>());
+        for (int i = 0; i < 3; i++) {
+            users.add(mock(User.class));
+        }
+        partySpy.setUsers(users);
 
-         given(partyRepository.findById(1L)).willReturn(Optional.of(partySpy));
- 
+        given(partyRepository.findById(1L)).willReturn(Optional.of(partySpy));
+
         // act
         for (int i = 0; i < 10; i++) {
             partyService.generateSecretSantas(1L);
@@ -294,11 +289,4 @@ class PartyServiceTest {
         assertEquals(3, partySpy.getSecretSantas().size());
     }
 
-    List<Long> listDuplicate(List<Long> list) {
-        Set<Long> elements = new HashSet<Long>();
-        return list.stream()
-          .filter(n -> !elements.add(n))
-          .collect(Collectors.toList());
-    }
- 
 }

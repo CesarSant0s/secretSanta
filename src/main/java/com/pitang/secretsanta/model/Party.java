@@ -1,7 +1,9 @@
 package com.pitang.secretsanta.model;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.pitang.secretsanta.dto.PartyDTO;
 
@@ -32,10 +34,10 @@ public class Party {
     private List<Gift> gifts;
 
     @OneToMany
-    private List<User> users;
+    private Set<User> users = new LinkedHashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<SecretSanta> secretSantas;
+    private Set<SecretSanta> secretSantas = new LinkedHashSet<>();
 
     public Party(String name, LocalDate partyDate, Double maxPriceGift) {
         this.setName(name);
@@ -93,5 +95,13 @@ public class Party {
         result = prime * result + ((partyDate == null) ? 0 : partyDate.hashCode());
         result = prime * result + ((maxPriceGift == null) ? 0 : maxPriceGift.hashCode());
         return result;
+    }
+
+    public void addSecretSanta(SecretSanta secretSanta) {
+        this.getSecretSantas().add(secretSanta);
+    }
+
+    public void removeAllSecretSantas() {
+        this.getSecretSantas().clear();
     }
 }

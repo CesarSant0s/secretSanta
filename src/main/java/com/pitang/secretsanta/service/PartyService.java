@@ -4,6 +4,7 @@ package com.pitang.secretsanta.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ import com.pitang.secretsanta.model.User;
 import com.pitang.secretsanta.repository.PartyRepository;
 
 import jakarta.persistence.EntityNotFoundException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
@@ -99,22 +103,79 @@ public class PartyService {
             throw new IllegalArgumentException("Party must have at least 3 participants");
         }
 
-        List<User> participantList = new ArrayList<>(party.getUsers());
-        
-        List<SecretSanta> generatedSecretSantas = new ArrayList<>();
+        party.removeAllSecretSantas();
 
-        Collections.shuffle(participantList);
-
-        for (int i = 0; i < participantList.size()-1; i++) {
-            generatedSecretSantas.add(new SecretSanta(participantList.get(i), participantList.get(i + 1)));
-        }
-        generatedSecretSantas.add(new SecretSanta(participantList.get(participantList.size() - 1), participantList.get(0)));
-        
-        party.setSecretSantas(generatedSecretSantas);
+        var participantList = new ArrayList<>(party.getUsers());
+       
+        distributeFriends(participantList).forEach((user, friend) -> {
+            party.addSecretSanta(new SecretSanta(user, friend));
+        });
 
         partyRepository.save(party);
 
     }
+
+    private HashMap<User, User> distributeFriends( List<User> participantList) {
+
+        Collections.shuffle(participantList);
+
+        var saco = new ArrayList<>(participantList);
+
+        while (participantList.equals(saco)) {
+            Collections.shuffle(saco);
+        }
+
+        HashMap<User, User> result = new HashMap<>();
+
+        participantList.forEach(user -> {
+            var sacoAux = new ArrayList<>(saco);
+            var reciver = sacoAux.stream().filter(sacoUser -> {
+                if (!sacoUser.equals(user) ) {
+                    return true;
+                } 
+                return false;
+
+            }
+            ).findFirst().orElseThrow(NullPointerException::new);
+            System.out.println("user: " + user.getName() + "\nreciver: " + reciver.getName());
+            result.put(user, reciver);
+            saco.remove(reciver);
+        });
+
+        return result;
+    }
+
+    // private HashMap<User, User> distributeFriends(List<User> users) {
+    //     var friends = new ArrayList<>(users);
+    //     Collections.shuffle(friends);
+
+    //     HashMap<User, User> result = new HashMap<>();
+    //     for (int i = 0; i < users.size(); i++) {
+    //         if (users.get(i).equals(friends.get(i))) {
+    //             return distributeFriends(users);
+    //         }
+    //         result.put(users.get(i), friends.get(i));
+    //     }
+
+    //     return result;
+    // }
+
+    // private HashMap<User, User> distributeFriends( List<User> participantList) {
+
+    //     Collections.shuffle(participantList);
+    //     HashMap<User, User> result = new HashMap<>();
+
+    //     for (int i = 0; i < participantList.size(); i++) {
+    //         if (i == participantList.size() - 1) {
+    //             result.put(participantList.get(i),participantList.get(0));
+    //             break;
+    //         }
+    //         result.put(participantList.get(i),participantList.get(i + 1));
+    //     }
+        
+    //     return result;
+    // }
+
 
     public void validateParty(Party party) {
         if (party.getMaxPriceGift() < 1.0) {

@@ -28,32 +28,32 @@ public class SecretsantaApplication {
 
 	@EventListener(ApplicationReadyEvent.class)
 	public void createUser() {
-		userService.create(new UserToSaveDTO(
-			"Cesar Santos", 
-			"cesar.santos2042@gmail.com", 
-			"12345678"));
-		userService.create(new UserToSaveDTO(
-			"Vilma lima", 
-			"vilma.lima@gmail.com",
-			"12345678"));
-		userService.create(new UserToSaveDTO(
-			"Millena Ferreira", 
-			"millena.ferreira@gmail.com",
-			"12345678"));
-		userService.create(new UserToSaveDTO(
-			"Carlos Eduardo", 
-			"carlos.eduardo@gmail.com",
-			"12345678"));
-		userService.create(new UserToSaveDTO(
-			"Antonio Cesar", 
-			"antonio.cesar@gmail.com",
-			"12345678"));
+	// 	userService.create(new UserToSaveDTO(
+	// 		"Cesar Santos", 
+	// 		"cesar.santos2042@gmail.com", 
+	// 		"12345678"));
+	// 	userService.create(new UserToSaveDTO(
+	// 		"Vilma lima", 
+	// 		"vilma.lima@gmail.com",
+	// 		"12345678"));
+	// 	userService.create(new UserToSaveDTO(
+	// 		"Millena Ferreira", 
+	// 		"millena.ferreira@gmail.com",
+	// 		"12345678"));
+	// 	userService.create(new UserToSaveDTO(
+	// 		"Carlos Eduardo", 
+	// 		"carlos.eduardo@gmail.com",
+	// 		"12345678"));
+	// 	userService.create(new UserToSaveDTO(
+	// 		"Antonio Cesar", 
+	// 		"antonio.cesar@gmail.com",
+	// 		"12345678"));
 					
-		partyService.createParty(new PartyDTO(
-			"Confraternização de fim de ano",
-			LocalDate.now().plusDays(1), 
-			100.0,
-			null, null, null));
+	// 	partyService.createParty(new PartyDTO(
+	// 		"Confraternização de fim de ano",
+	// 		LocalDate.now().plusDays(1), 
+	// 		100.0,
+	// 		null, null, null));
 	
 	}
 

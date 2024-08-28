@@ -1,4 +1,4 @@
-@authToken= Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTYW50YVNlY3JldCBBUEkiLCJzdWIiOiJjZXNhci5zYW50b3MyMDQyQGdtYWlsLmNvbSIsImV4cCI6MTcyMzcwMTMyOX0.2kudfWct2F7X9yl32iA_ZF_fbsRsZkZUo-nE8_NwJws
+@authToken= Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJTYW50YVNlY3JldCBBUEkiLCJzdWIiOiJjZXNhci5zYW50b3MyMDQyQGdtYWlsLmNvbSIsImV4cCI6MTcyNDMzOTA1N30.NmRwlpWpAOtMDwDwh6448E4wGkCcXowg5sWDJFVFJ3M
 
 ### Login
 POST http://localhost:8080/login HTTP/1.1
@@ -31,12 +31,12 @@ content-Type: application/json
 Authorization: {{authToken}}
 
 {
-    "name": "",
+    "name": "Festa de ano novo",
     "partyDate": "2024-12-25",
     "maxPriceGift": 100.00
 }
 
-### Insert unser in a party
+### Insert user in a party
 POST http://localhost:8080/party/1/user/1 HTTP/1.1
 content-Type: application/json
 Authorization: {{authToken}}
